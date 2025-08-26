@@ -66,16 +66,21 @@ def bfs (root):
 
 def in_order (root):
     "Completar"
-    return []
+    if root is None:
+        return[]
+    return in_order(root.left) + [root.val] + in_order(root.right)
 
 def pre_order (root):
     "Completar"
-    return []
+    if root is None:
+        return []
+    return [root.val] + pre_order(root.left) + pre_order(root.right)
 
 def post_order(root):
     "Completar"
-    return []
-
+    if root is None:
+        return []
+    return post_order(root.left) +  post_order(root.right) + [root.val]
 
 class Tree_nary:
     def __init__(self,value,children = []):
@@ -84,8 +89,15 @@ class Tree_nary:
 
     def bfs(self):
         "Completar"
-        return []
-
+        if self is None:
+            return []
+        queue = [self]
+        res = []
+        while queue:
+            current = queue.pop(0)
+            for c in current.children:
+                queue.append(c)
+        return res
 
 if __name__ == "__main__":
 
@@ -106,8 +118,15 @@ if __name__ == "__main__":
 
     #Agregar ejecuciones de funciones aqui
 
+    print("\nRecorridos del árbol binario:")
+    print("in-order  ->", in_order(root))
+    print("pre-order ->", pre_order(root))
+    print("post-order->", post_order(root))
 
-    #ESTA ES LA PRUEBA DE CAMBIOS
+    nroot = Tree_nary(1, [
+        Tree_nary(2, [Tree_nary(4), Tree_nary(5)]),
+        Tree_nary(3)
+    ])
 
-
+    print("\nBFS árbol n-ario ->", nroot.bfs())
 
