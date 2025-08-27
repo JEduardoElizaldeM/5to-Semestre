@@ -64,69 +64,81 @@ def bfs (root):
     return res
     
 
-def in_order (root):
+def in_order(root):
     "Completar"
-    if root is None:
-        return[]
-    return in_order(root.left) + [root.val] + in_order(root.right)
+    recorrido,izquierda,derecha = [],[],[]
+    if root :
+        recorrido.append(root.val)
+        
+        if root.left :
+            izquierda = in_order(root.left)
+        
+        if root.right: 
+            derecha = in_order(root.right)
+    
+    return  izquierda + recorrido + derecha
+
 
 def pre_order (root):
     "Completar"
-    if root is None:
-        return []
-    return [root.val] + pre_order(root.left) + pre_order(root.right)
+    recorrido, izquierda, derecha = [], [], []
+    if root:
+        recorrido.append(root.val)
+        if root.left:
+            izquierda = pre_order(root.left)
+        if root.right:
+            derecha = pre_order(root.right)
+    return recorrido + izquierda + derecha
 
 def post_order(root):
     "Completar"
-    if root is None:
-        return []
-    return post_order(root.left) +  post_order(root.right) + [root.val]
+    recorrido, izquierda, derecha = [], [], []
+    if root:
+        if root.left:
+            izquierda = post_order(root.left)
+        if root.right:
+            derecha = post_order(root.right)
+        recorrido.append(root.val)
+    return izquierda + derecha + recorrido
 
 class Tree_nary:
-    def __init__(self,value,children = []):
-        self.value =  value 
-        self.children =  children
+    def __init__(self, value, children=None):
+        self.value = value
+        self.children = [] if children is None else children
+    
+    def agrega_hijo(self, nodo):
+        self.children.append(nodo)
 
     def bfs(self):
         "Completar"
-        if self is None:
-            return []
+        recorrido = []
         queue = [self]
-        res = []
         while queue:
-            current = queue.pop(0)
-            for c in current.children:
-                queue.append(c)
-        return res
+            actual = queue.pop(0)
+            recorrido.append(actual.value)
+            for hijo in actual.children:
+                queue.append(hijo)
+        return recorrido
+
 
 if __name__ == "__main__":
-
+    
     root  =  TreeNode(1) 
     root.left  =  TreeNode(2)
     root.right =  TreeNode(3)
     root.right.left = TreeNode(50)
     root.left.right =  TreeNode(4)
-    
-    print("Bfs")
-    print(bfs(root))
-
-    print("bfs recursivo")
-    print(bfs_recurivso(root))
-
-    print("\n toString del arbol binario: \n")
-    print(root)
-
+    print("In-order:", in_order(root))
     #Agregar ejecuciones de funciones aqui
-
-    print("\nRecorridos del árbol binario:")
-    print("in-order  ->", in_order(root))
-    print("pre-order ->", pre_order(root))
-    print("post-order->", post_order(root))
-
-    nroot = Tree_nary(1, [
-        Tree_nary(2, [Tree_nary(4), Tree_nary(5)]),
-        Tree_nary(3)
+    print("Pre-order:", pre_order(root))
+    print("Post-order:", post_order(root))
+    print("BFS binario:", bfs(root))
+    print("BFS recursivo binario:", bfs_recurivso(root))
+    
+    #Ejemplo
+    nroot = Tree_nary(10, [
+        Tree_nary(20),
+        Tree_nary(30, [Tree_nary(50)]),
+        Tree_nary(40)
     ])
-
-    print("\nBFS árbol n-ario ->", nroot.bfs())
-
+    print("BFS n-ario:", nroot.bfs())
